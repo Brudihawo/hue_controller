@@ -1,1 +1,1 @@
-A Simple CLI for controlling hue Lamps
+A simple CLI for controlling Hue lamps
