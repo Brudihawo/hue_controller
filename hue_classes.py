@@ -22,28 +22,69 @@ class SerializeError(BaseMessageError):
 
 class NetworkObject:
   """
-  A network object
+  A network object with http request functionality
   """
     
   def __init__(self, ip, name):
+    """Initialization from ip and name
+    
+    Returns:
+      None
+    """
     self.ip = ip.strip("/") + "/"
     self.name = name
 
   def __repr__(self):
-    return f"Network Object {self.name} at {self.ip}"
+    """Representation of self
     
-  def __str__(self):
+    Returns:
+      Representation of self as string
+    """
+    return f"Object <NetworkObject>({self.name},{self.ip})"
+    
+  def __str__(self):    
+    """Representation of self
+    
+    Returns:
+      Representation of self as string
+    """
     return f"Network Object {self.name} at {self.ip}"
 
   def post(self, subadress, data=None):
+    """Execute a http POST request at self.ip/subadress with payload data
+    
+    Args:
+      subadress (str): Subadress for request
+      data (dict): JSON Data to send
+    
+    Returns:
+      requests http response
+    """
     response = requests.post(f"{self.ip}{subadress}", json=data)
     return response
 
   def get(self, subadress):
+    """Execute a http GET request at self.ip/subadress with payload data
+    
+    Args:
+      subadress (str): Subadress for request
+    
+    Returns:
+      requests http response
+    """
     response = requests.get(f"{self.ip}{subadress}")
     return response
 
   def put(self, subadress, data):
+    """Execute a http PUT request at self.ip/subadress with payload data
+    
+    Args:
+      subadress (str): Subadress for request
+      data (dict): JSON Data to send
+    
+    Returns:
+      requests http response
+    """
     response = requests.put(f"{self.ip}{subadress}", json=data)
     return response
 
@@ -55,9 +96,10 @@ class HueBridge(NetworkObject):
     
   def __init__(self, name, ip=None):
     """Initializes hue Bridge
+    
     Args:
-      name: name of the Hue Bridge
-      ip: network ip of Hue Bridge
+      name (str): name of the Hue Bridge
+      ip (str): network ip of Hue Bridge
 
     Returns:
       None
@@ -103,9 +145,26 @@ class HueBridge(NetworkObject):
       self.username = self.get_auth()
       self.lights = self.get_lights()
     super().__init__(ip, name)
-
+  
+  def __repr__(self):
+    """Representation of self
+    
+    Returns:
+      Representation of self as string in format Object <HueBridge>()
+    """
+    return f"Object <HueBridge> ({self.name}, {self.ip})"
+  
+  def __repr__(self):
+    """String representation of self
+    
+    Returns:
+      Representation of self as string in format <HueBridge> (ip|name)
+    """
+    return f"Hue Bridge {self.name} at {self.ip}"
+  
   def get_auth(self):
     """Gets Authentification information from Hue Bridge via http request.
+    
     Returns:
       None
 
@@ -125,6 +184,7 @@ class HueBridge(NetworkObject):
   
   def get_lights(self):
     """Gets information on lights connected to hue bridge
+    
     Returns:
       Dict mapping light names to light numbers of Hue Bridge
 
@@ -142,6 +202,7 @@ class HueBridge(NetworkObject):
 
   def serialize(self):
     """Saves Information on Hue Bridge to bridges/bridge_name.json in JSON format.
+    
     Returns:
       None
 
@@ -156,8 +217,9 @@ class HueBridge(NetworkObject):
   
   def set_light_on(self, names):
     """Turns lights on by name
+    
     Args:
-      names: List of light names
+      names (list): List of light names
     
     Returns:
       None
@@ -168,8 +230,9 @@ class HueBridge(NetworkObject):
 
   def set_light_off(self, names):
     """Turns lights off by name
+    
     Args:
-      names: List of light names
+      names (list): List of light names
     
     Returns:
       None
@@ -180,6 +243,7 @@ class HueBridge(NetworkObject):
 
   def get_light_names(self):
     """Gets light names
+    
     Returns:
       List of lights (names) connected to hue bridge
     """
@@ -187,9 +251,10 @@ class HueBridge(NetworkObject):
   
   def create_group(self, group_name, light_names):
     """Creates a group of lights with given name
+    
     Args:
-      group_name: Name of the group
-      light_names: List containing light names
+      group_name (str): Name of the group
+      light_names (list): List containing light names
 
     Returns:
       None
@@ -205,8 +270,9 @@ class HueBridge(NetworkObject):
 
   def remove_group(self, group_name):
     """Removes group by name
+    
     Args:
-      group_name: Name of group to remove
+      group_name (str): Name of group to remove
 
     Returns:
       None
@@ -222,8 +288,9 @@ class HueBridge(NetworkObject):
   
   def set_group_on(self, group_name):
     """Turns on all lights in a group
+    
     Args:
-      group_name: Name of the group to turn on
+      group_name (str): Name of the group to turn on
 
     Returns:
       None
@@ -235,8 +302,9 @@ class HueBridge(NetworkObject):
 
   def set_group_off(self, group_name):
     """Turns off all lights in a group
+    
     Args:
-      group_name: Name of the group to turn off
+      group_name (str): Name of the group to turn off
 
     Returns:
       None
@@ -248,11 +316,13 @@ class HueBridge(NetworkObject):
 
   def set_bri_sat_hue(self, light_names, brightness=None, saturation=None, hue=None):
     """Sets light settings by name
+    
     Args:
-      light_names: Names of lights to modify
-      brightness: Optional, brightness of lights (in percent) between 0 and 100
-      saturation: Optional, saturation of lights (in percent) between 0 and 100
-      hue: Optional, hue of lights between 0 and 65535
+      light_names (list): Names of lights to modify
+      brightness (int or float): Optional, brightness of lights (in percent) between 0 and 100
+      saturation (int or float): Optional, saturation of lights (in percent) between 0 and 100
+      hue (int or float): Optional, hue of lights between 0 and 65535
+      
     Returns:
       None
     """
@@ -277,11 +347,13 @@ class HueBridge(NetworkObject):
       
   def group_set_bri_sat_hue(self, group_name, brightness=None, saturation=None, hue=None):
     """Sets brightness, saturation and hue of lighting group
+    
     Args:
-      group_name: Name of group to modify
-      brightness: Optional, brightness of lights (in percent) between 0 and 100
-      saturation: Optional, saturation of lights (in percent) between 0 and 100
-      hue: Optional, hue of lights between 0 and 65535
+      group_name (str): Name of group to modify
+      brightness (int or float): Optional, brightness of lights (in percent) between 0 and 100
+      saturation (int or float): Optional, saturation of lights (in percent) between 0 and 100
+      hue (int or float): Optional, hue of lights between 0 and 65535
+      
     Returns:
       None
     """

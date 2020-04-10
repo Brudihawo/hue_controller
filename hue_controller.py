@@ -7,19 +7,14 @@ import logging
 from hue_classes import HueBridge
 from hue_util import get_next
 
-def get_input_params():
-  """Gets input parameters
-  Return:
-    Tuple containing information on input parameters
-  """
-  
-  bridge_name = None
-  action = None
-  params = None
 
-  for index, element in enumerate(sys.argv):
-    if element == "--help" or element == "-h":
-      help_str = \
+def print_help():
+  """Prints Help Information
+  
+  Returns:
+    None
+  """
+  help_str = \
 """Usage: hue_controller.py <command> [params]
 Special Commands:
     --init-bridge  'bridge name' 'ip'
@@ -68,7 +63,22 @@ Light Control:
             Similar to --set-bsh
             sets brightness, saturation and hue for a group
 """
-      print(help_str)
+  print(help_str)
+
+def get_input_params():
+  """Gets input parameters and manages special commands
+  
+  Returns:
+    Tuple containing information on input parameters
+  """
+  
+  bridge_name = None
+  action = None
+  params = None
+
+  for index, element in enumerate(sys.argv):
+    if element == "--help" or element == "-h":
+      print_help()
       return None, None, None
     elif element == "--show-bridges":
       for bridge_file in os.scandir("bridges"):
@@ -141,45 +151,53 @@ Light Control:
   return bridge_name, action, params
 
 def main():
-    bridge_name, action, params = get_input_params()   
-    if bridge_name:
-        bridge = HueBridge(bridge_name)
-        if action == "TURNON":
-            bridge.set_light_on(params)
-        if action == "TURNOFF":
-            bridge.set_light_off(params)
-        if action == "GROUPON":
-            bridge.set_group_on(params)
-        if action == "GROUPOFF":
-            bridge.set_group_off(params)
+  """Manages command line input obtained through get_input_params
+  
+  Sanitizes values input values and calls hue bridge functions
+  to control lights and output information on hue bridge
+  
+  Returns:
+    None
+  """
+  bridge_name, action, params = get_input_params()   
+  if bridge_name:
+      bridge = HueBridge(bridge_name)
+      if action == "TURNON":
+          bridge.set_light_on(params)
+      if action == "TURNOFF":
+          bridge.set_light_off(params)
+      if action == "GROUPON":
+          bridge.set_group_on(params)
+      if action == "GROUPOFF":
+          bridge.set_group_off(params)
+      
+      # removes "" values and replaces them with none, so nothing is changed
+      if "BSH" in action:
+        light_vals = params[1]
+        for index, val in enumerate(light_vals):
+          try:
+            light_vals[index] = int(val)
+          except ValueError:
+            light_vals[index] = None
+        if action == "SETBSH":
+          bridge.set_bri_sat_hue([params[0]], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
+        elif action == "SETBSHGROUP":
+          bridge.group_set_bri_sat_hue(params[0], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
         
-        # removes "" values and replaces them with none, so nothing is changed
-        if "BSH" in action:
-          light_vals = params[1]
-          for index, val in enumerate(light_vals):
-            try:
-              light_vals[index] = int(val)
-            except ValueError:
-              light_vals[index] = None
-          if action == "SETBSH":
-            bridge.set_bri_sat_hue([params[0]], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
-          elif action == "SETBSHGROUP":
-            bridge.group_set_bri_sat_hue(params[0], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
-          
-        if action == "CREATEGROUP":
-            try:
-                bridge.create_group(*params)
-            except KeyError:
-                print("Correct Usage: -b hue_bridge --create-group 'group_name|light_1;light_2;...")
-        if action == "REMOVEGROUP":
-            bridge.remove_group(params)
-        
-        if action == "SHOWLIGHTS":
-            for light in bridge.lights:
-                print(bridge.lights[light])
-        if action == "SHOWGROUPS":
-            for group in bridge.groups:
-                print(f"{group:>15}: {bridge.groups[group]}")
+      if action == "CREATEGROUP":
+          try:
+              bridge.create_group(*params)
+          except KeyError:
+              print("Correct Usage: -b hue_bridge --create-group 'group_name|light_1;light_2;...")
+      if action == "REMOVEGROUP":
+          bridge.remove_group(params)
+      
+      if action == "SHOWLIGHTS":
+          for light in bridge.lights:
+              print(bridge.lights[light])
+      if action == "SHOWGROUPS":
+          for group in bridge.groups:
+              print(f"{group:>15}: {bridge.groups[group]}")
 
 if __name__ == "__main__":
     main()
