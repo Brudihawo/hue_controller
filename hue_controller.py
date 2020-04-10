@@ -160,6 +160,7 @@ class HueBridge(NetworkObject):
         """Turns lights on by name
         Args:
             names: List of light names
+        
         Returns:
             None
         """
@@ -171,6 +172,7 @@ class HueBridge(NetworkObject):
         """Turns lights off by name
         Args:
             names: List of light names
+        
         Returns:
             None
         """
@@ -190,8 +192,17 @@ class HueBridge(NetworkObject):
         Returns:
             None
         """
+        pass
 
     def create_group(self, group_name, light_names):
+        """Creates a group of lights with given name
+        Args:
+            group_name: Name of the group
+            light_names: List containing light names
+
+        Returns:
+            None
+        """
         group = []
         for light_name in light_names:
             if light_name in self.lights.values():
@@ -214,14 +225,33 @@ class HueBridge(NetworkObject):
     def get_groups(self):
         return self.groups
     
+    def set_group_on(self, group_name):
+        """Turns on all lights in a group
+        Args:
+            group_name: Name of the group to turn on
 
-    # TODO program group behaviour
-    def turn_group_on(self, group_name):
-        pass
+        Returns:
+            None
 
-    def turn_group_off(self, group_name):
-        pass
+        Raises:
+            KeyError if group does not exist
+        """
+        self.set_light_on(self.groups[group_name])
 
+    def set_group_off(self, group_name):
+        """Turns off all lights in a group
+        Args:
+            group_name: Name of the group to turn off
+
+        Returns:
+            None
+
+        Raises:
+            KeyError if group does not exist
+        """
+        self.set_light_off(self.groups[group_name])
+    
+   
 
 def get_next(arr, elem):
     try:
@@ -230,86 +260,147 @@ def get_next(arr, elem):
         return None
 
 
-
-
-
 def get_input_params():
     """Gets input parameters
     Return:
         Tuple containing information on input parameters
     """
     
+    bridge_name = None
+    action = None
+    params = None
 
-    save = False
-    ip = None
-    name = None
-    turn_on = None
-    turn_off = None
-    showlights = False
-    remove_group = None
-    group = None
-    group_name = None
-    show_groups = False
 
     for index, element in enumerate(sys.argv):
-        if element.startswith("-"):
-            if element == "--show-bridges":
-                for bridge_file in os.scandir("bridges"):
-                    print(bridge_file.name.strip(".json"))
+        if element == "--help" or element == "-h":
+            help_str = \
+"""Usage: hue_controller.py <command> [params]
+Special Commands:
+    --init-bridge  'bridge name' 'ip'
+            Initializes new Hue Bridge at given ip. 
+            Press hue sync button before executing.
+
+    --show-bridges
+            Shows all avaliable initialized bridges.
+
+================================================================================
+Bridge-Specific Commands (Specify bridge with -b 'bridge_name'):
+    --show-lights
+            Lists lights connected to a bridge.
+
+    --show-groups
+            Lists groups defined for a bridge.
+
+-------------------------------------------------------------------------------
+Grouping:
+    --create-group 'group_name|light1;light2;light3...'
+            Creates group of lights by light name. 
+
+    --remove-group 'group_name'
+            Removes group by name.
+
+-------------------------------------------------------------------------------
+Light Control:
+    --on 'light_name'
+            Turns on light by name.
+
+    --off 'light_name'
+            Turns off light by name.
+
+    --group-on 'group_name'
+            Turns on all lights in group by name
+
+    --group-off 'group_name'
+            Turns off all lights in group by name
+"""
+            print(help_str)
+            return None, None, None
+        elif element == "--show-bridges":
+            for bridge_file in os.scandir("bridges"):
+                print(bridge_file.name.strip(".json"))
+                return None, None, None
+        elif element == "--init-bridge":
+            bridge_name = get_next(sys.argv, element)
+            ip = get_next(sys.argv, bridge)
+            bridge = HueBridge(name, ip)
+            bridge.serialize()
+            print(f"Created Hue Bridge {bridge_name} at IP {ip}")
+            return None, None, None
+        else:
+            if element == "-b":
+                bridge_name = get_next(sys.argv, element)
                 
-            else:
-                if element == "--show-lights":
-                    showlights = True
-                if element == "-s":
-                    save = True
-                if element == "-i":
-                    ip = get_next(sys.argv, element)
-                if element == "-b":
-                    name = get_next(sys.argv, element)
-                if element == "--on":
-                    turn_on = get_next(sys.argv, element).split(";")
-                if element == "--off":
-                    turn_off = get_next(sys.argv, element).split(";")
-                if element == "--create-group":
-                    group = get_next(sys.argv, element).split(";")
-                if element == "--group-name":
-                    group_name = get_next(sys.argv, element)
-                if element == "--remove-group":
-                    remove_group = get_next(sys.argv, element)
-                if element == "--show-groups":
-                    show_groups = True
-    return save, ip, name, turn_on, turn_off, showlights, group, group_name, remove_group, show_groups
+            if element == "--show-lights":
+                action = "SHOWLIGHTS"
+                params = None
+                break
+                
+            if element == "--show-groups":
+                action = "SHOWGROUPS"
+                params = None
+                break
+                
+            if element == "--on":
+                action = "TURNON"
+                params = get_next(sys.argv, element).split(";")
+                break
+
+            if element == "--off":
+                action = "TURNOFF"
+                params = get_next(sys.argv, element).split(";")
+                break
+            
+            if element == "--create-group":
+                action = "CREATEGROUP"
+                group_name, lights = get_next(sys.argv, element).split("|")
+                params = [group_name, lights.split(";")]
+                break
+            
+            if element == "--remove-group":
+                action = "REMOVEGROUP"
+                params = get_next(sys.argv, element)
+                break
+            
+            if element == "--group-on":
+                action = "GROUPON"
+                params = get_next(sys.argv, element)
+                break
+            
+            if element == "--group-off":
+                action = "GROUPOFF"
+                params = get_next(sys.argv, element)
+                break
+    
+    return bridge_name, action, params
 
 def main():
-    save, ip, name, turn_on, turn_off, showlights, group, group_name, remove_group, show_groups = get_input_params()
+    bridge_name, action, params = get_input_params()   
+    if bridge_name:
+        bridge = HueBridge(bridge_name)
     
-    if name:
-        if ip:
-            bridge = HueBridge(name, ip)
-        else:
-            bridge = HueBridge(name)
-        if save:
-            bridge.serialize()
-    
-        if turn_on:
-            bridge.set_light_on(turn_on)
-        if turn_off:
-            bridge.set_light_off(turn_off)
-        if showlights:
-            for light in bridge.get_light_names():
-                print(light)
-        if group and group_name:
+        if action == "TURNON":
+            bridge.set_light_on(params)
+        if action == "TURNOFF":
+            bridge.set_light_off(params)
+        if action == "GROUPON":
+            bridge.set_group_on(params)
+        if action == "GROUPOFF":
+            bridge.set_group_off(params)
+
+        if action == "CREATEGROUP":
             try:
-                bridge.create_group(group_name, group)
+                bridge.create_group(params[0], params[1])
             except KeyError:
-                print("fThe group {group_name} already exsists!")
-        if (group and not group_name) or (group_name and not group):
-            print("Use --group-name 'name' and --group 'light_name1;light_name2...' to create a group. Both parameters need to be present.")
-        if remove_group:
-            bridge.remove_group(remove_group)
-        if show_groups:
-            for group_name, lights in bridge.get_groups().items():
-                print(f"{group_name:>20}: {str(lights)}")
+                print("Correct Usage: -b hue_bridge --create-group 'group_name|light_1;light_2;...")
+        if action == "REMOVEGROUP":
+            bridge.remove_group(params)
+        
+        if action == "SHOWLIGHTS":
+            for light in bridge.get_lights():
+                print(light)
+        if action == "SHOWGROUPS":
+            for group in bridge.groups:
+                print(f"{group:>10}:{bridge.groups[group]}")
 
 if __name__ == "__main__":
     main()
