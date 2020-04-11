@@ -60,8 +60,18 @@ Light Control:
             Hue value is between 0 and 65535.
     
     --set-bsh-group 'group_name|brightness;saturation;hue'
-            Similar to --set-bsh
-            sets brightness, saturation and hue for a group
+            Similar to --set-bsh.
+            Sets brightness, saturation and hue for a group.
+    
+    --inc-bsh 'light_name|brightness;saturation;hue'
+            Increments brightness, saturation and hue of a light by name.
+            Brightness and Saturation increments in are percentages.
+            Hue increment is between 0 and 65535
+            
+    --inc-bsh-group 'group_name|brightness;saturation;hue'
+            Similar to --inc-bsh.
+            Increments brightness, saturation and hue for a group.
+            
 """
   print(help_str)
 
@@ -148,6 +158,18 @@ def get_input_params():
         params = [group_name, l_params.split(";")]
         break
       
+      if element == "--inc-bsh":
+        action = "INCBSH"
+        light_name, inc_params = get_next(sys.argv, element).split("|")
+        params = [light_name, inc_params.split(";")]
+        break
+      
+      if element == "--inc-bsh-group":
+        action = "INCBSHGROUP"
+        group_name, inc_params = get_next(sys.argv, element).split("|")
+        params = [group_name, inc_params.split(";")]
+        break
+      
   return bridge_name, action, params
 
 def main():
@@ -179,10 +201,17 @@ def main():
             light_vals[index] = int(val)
           except ValueError:
             light_vals[index] = None
+        # setting actions
         if action == "SETBSH":
           bridge.set_bri_sat_hue([params[0]], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
         elif action == "SETBSHGROUP":
           bridge.group_set_bri_sat_hue(params[0], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
+        # incrementing actions
+        elif action == "INCBSH":
+          bridge.increment_light([params[0]], brightness_inc=light_vals[0], saturation_inc=light_vals[1], hue_inc=light_vals[2])
+        elif action == "INCBSHGROUP":
+          bridge.increment_group(params[0], brightness_inc=light_vals[0], saturation_inc=light_vals[1], hue_inc=light_vals[2])
+      
         
       if action == "CREATEGROUP":
           try:

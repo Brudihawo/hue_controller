@@ -19,6 +19,8 @@ class SignInError(BaseMessageError):
 class SerializeError(BaseMessageError):
   pass
 
+class LightParamError(BaseMessageError):
+  pass
 
 class NetworkObject:
   """
@@ -358,3 +360,82 @@ class HueBridge(NetworkObject):
       None
     """
     self.set_bri_sat_hue(self.groups[group_name], brightness=brightness, saturation=saturation, hue=hue)
+
+  def get_light_states(self):
+    """Gets current state of all lights connected to hue bridge
+    
+    Returns:
+      light_states: Dict mapping light state (brightness, saturation, hue) to light
+    """
+    raw_json_light_data = self.get(f"api/{self.username}/lights").json()
+    light_states = {}
+    for light_name, light_id in self.lights.items():
+      light_state = raw_json_light_data[light_id]["state"]
+      tmp_dict = {}
+      if "bri" in light_state:
+        tmp_dict.update({"brightness": int(light_state["bri"])})
+      if "sat" in light_state:
+        tmp_dict.update({"saturation": int(light_state["sat"])})
+      if "hue" in light_state:
+        tmp_dict.update({"hue": int(light_state["hue"])})
+      light_states.update({light_name: tmp_dict})
+    return light_states
+  
+  def increment_light(self, names, brightness_inc=None, saturation_inc=None, hue_inc=None):
+    """Increments light parameters of lights by name
+    
+    Increments light paramters of a list of lights. Note that the same increments will be applied to all lights.
+    Initially different light states of lights in a group will result in different states after increment.
+    Brightness and Saturation are capped at 100, hue is capped at 65535
+    
+    Args:
+      names (list): Names of lights to increment_light
+      brightness_inc (int): Percentage brightness increment
+      saturation_inc (int): Percentage saturation increment
+      hue_inc (int): Absolute hue increment between 0 and 65535
+    
+    Returns:
+      None
+      
+    Raises:
+      LightParamError if the light does not support the parameter you want to set
+    """
+    light_states = self.get_light_states()
+    for name in names:
+      if name in light_states:
+        for param, inc in zip(["brightness", "saturation", "hue"], [brightness_inc, saturation_inc, hue_inc]):
+          if inc:
+            if param not in light_states[name]:
+              raise LightParamError("Nonsupported Parameter", f"Cannot set parameter {param} for light {name}")
+            if param == "hue":
+              light_states[name][param] = light_states[name][param] + inc
+            else:
+              light_states[name][param] = map_linear(light_states[name][param], 0, 255, 0, 100) + inc
+        if light_states[name]["brightness"] <= 0:
+          self.set_light_off([name])
+        else:
+          self.set_light_on([name])
+        self.set_bri_sat_hue([name], **light_states[name])
+        
+  def increment_group(self, group_name, brightness_inc=None, saturation_inc=None, hue_inc=None):
+    """Increments all lights in group by same values
+    
+    Increments light paramters of a group. Note that the same increments will be applied to all lights.
+    Initially different light states of lights in a group will result in different states after increment.
+    Brightness and Saturation are capped at 100, hue is capped at 65535
+    
+    Turns light off if brightness reaches 0 and turns light on otherwise
+    
+    Args:
+      group_name (str): Names of lights to increment_light
+      brightness_inc (int): Percentage brightness increment
+      saturation_inc (int): Percentage saturation increment
+      hue_inc (int): Absolute hue increment between 0 and 65535
+    
+    Returns:
+      None
+      
+    Raises:
+      KeyError if group does not exist
+    """
+    self.increment_light(self.groups[group_name], brightness_inc=brightness_inc, saturation_inc=saturation_inc, hue_inc=hue_inc)

@@ -201,6 +201,20 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="hue_classes.HueBridge.get_light_states">
+<code class="sig-name descname">get_light_states</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.get_light_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets current state of all lights connected to hue bridge</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dict mapping light state (brightness, saturation, hue) to light</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>light_states</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="hue_classes.HueBridge.get_lights">
 <code class="sig-name descname">get_lights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.get_lights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets information on lights connected to hue bridge</p>
@@ -229,6 +243,57 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hue_classes.HueBridge.increment_group">
+<code class="sig-name descname">increment_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em>, <em class="sig-param"><span class="n">brightness_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue_inc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.increment_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments all lights in group by same values</p>
+<p>Increments light paramters of a group. Note that the same increments will be applied to all lights.
+Initially different light states of lights in a group will result in different states after increment.
+Brightness and Saturation are capped at 100, hue is capped at 65535</p>
+<p>Turns light off if brightness reaches 0 and turns light on otherwise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_name</strong> (<em>str</em>) – Names of lights to increment_light</p></li>
+<li><p><strong>brightness_inc</strong> (<em>int</em>) – Percentage brightness increment</p></li>
+<li><p><strong>saturation_inc</strong> (<em>int</em>) – Percentage saturation increment</p></li>
+<li><p><strong>hue_inc</strong> (<em>int</em>) – Absolute hue increment between 0 and 65535</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>KeyError if group does not exist</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hue_classes.HueBridge.increment_light">
+<code class="sig-name descname">increment_light</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">names</span></em>, <em class="sig-param"><span class="n">brightness_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue_inc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.increment_light" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments light parameters of lights by name</p>
+<p>Increments light paramters of a list of lights. Note that the same increments will be applied to all lights.
+Initially different light states of lights in a group will result in different states after increment.
+Brightness and Saturation are capped at 100, hue is capped at 65535</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>names</strong> (<em>list</em>) – Names of lights to increment_light</p></li>
+<li><p><strong>brightness_inc</strong> (<em>int</em>) – Percentage brightness increment</p></li>
+<li><p><strong>saturation_inc</strong> (<em>int</em>) – Percentage saturation increment</p></li>
+<li><p><strong>hue_inc</strong> (<em>int</em>) – Absolute hue increment between 0 and 65535</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>LightParamError if the light does not support the parameter you want to set</strong> – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -342,6 +407,12 @@
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py exception">
+<dt id="hue_classes.LightParamError">
+<em class="property">exception </em><code class="sig-prename descclassname">hue_classes.</code><code class="sig-name descname">LightParamError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.LightParamError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hue_classes.BaseMessageError" title="hue_classes.BaseMessageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_classes.BaseMessageError</span></code></a></p>
 </dd></dl>
 
 <dl class="py class">
