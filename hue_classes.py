@@ -348,6 +348,10 @@ class HueBridge(NetworkObject):
     if type(hue) == int:
       params.update({"hue": hue})
     for light_name in light_names:
+      if params["bri"] <= 0:
+        set_light_off(light_name)
+      else:
+        set_light_off(light_name)
       self.put(f"api/{self.username}/lights/{self.lights[light_name]}/state", data=params)
       
   def group_set_bri_sat_hue(self, group_name, brightness=None, saturation=None, hue=None):
