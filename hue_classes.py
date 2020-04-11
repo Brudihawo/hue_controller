@@ -121,8 +121,9 @@ class HueBridge(NetworkObject):
       pass
 
     # Try loading existing JSON configuration file first
+    project_loc = os.path.dirname(__file__)
     try:
-      with open(f"bridges/{name}.json", "r") as json_file:
+      with open(f"{project_loc}/bridges/{name}.json", "r") as json_file:
         load = json.load(json_file)
         self.username = load["username"]
         self.ip = load["ip"]
@@ -214,7 +215,8 @@ class HueBridge(NetworkObject):
     if not self.ip or not self.username or not self.lights or not self.name:
       raise SerializeError("Missing Information", "Cannot serialize uninitialized hue bridge!")
     out = {"ip": self.ip, "username": self.username, "lights": self.lights, "groups": self.groups}
-    with open(f"bridges/{self.name}.json", "w") as json_file:
+    project_loc = __file__.strip("hue_classes.py")
+    with open(f"{project_loc}/bridges/{self.name}.json", "w") as json_file:
       json.dump(out, json_file)
   
   def set_light_on(self, names):
