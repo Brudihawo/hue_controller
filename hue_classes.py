@@ -180,7 +180,7 @@ class HueBridge(NetworkObject):
     elif "success" in lights_response.text:
       response_data = lights_response.json()
       username = response_data[0]["success"]["username"]
-      logging.info(f"Success! Signed in with username {self.username}")
+      print(f"Success! Signed in with username {self.username}")
       return username
     else:
       raise SignInError("Sign In Failed", "An unknown error occurred!")
@@ -265,10 +265,11 @@ class HueBridge(NetworkObject):
     """
     group = []
     for light_name in light_names:
-      if light_name in self.lights.values():
+      if light_name in self.lights:
         group.append(light_name)
       else:
         print(f"Could not find light: {light_name}. Skipped when creating group {group_name}.")
+    print(group)
     self.groups.update({group_name: group})
     self.serialize()
 
