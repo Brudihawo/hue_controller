@@ -96,8 +96,8 @@ def get_input_params():
         return None, None, None
     elif element == "--init-bridge":
       bridge_name = get_next(sys.argv, element)
-      ip = get_next(sys.argv, bridge)
-      bridge = HueBridge(name, ip)
+      ip = get_next(sys.argv, bridge_name)
+      bridge = HueBridge(bridge_name, ip)
       bridge.serialize()
       print(f"Created Hue Bridge {bridge_name} at IP {ip}")
       return None, None, None
@@ -221,6 +221,7 @@ def main():
           
         if action == "CREATEGROUP":
             try:
+                print(params)
                 bridge.create_group(*params)
             except KeyError:
                 print("Correct Usage: -b hue_bridge --create-group 'group_name|light_1;light_2;...")
