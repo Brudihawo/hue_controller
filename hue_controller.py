@@ -185,8 +185,9 @@ def main():
   if bridge_name:
       bridge = HueBridge(bridge_name)
       # Creating lockfile to prevent simultateous access to hue bridge
-      project_dir = os.path.dirname(__file__)
+      project_dir = os.path.abspath(os.path.dirname(__file__))
       lockfile_path = f"{project_dir}/bridges/{bridge_name}.lck"
+      print(lockfile_path)
       if not os.path.isfile(lockfile_path):
         with open(lockfile_path, "w+") as lck_file:
           lck_file.write(f"{bridge_name} is locked!")
@@ -234,6 +235,7 @@ def main():
         if action == "SHOWGROUPS":
             for group in bridge.groups:
                 print(f"{group:>15}: {bridge.groups[group]}")
+        print("DONE")
         os.remove(lockfile_path)
         
 if __name__ == "__main__":
