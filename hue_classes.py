@@ -115,13 +115,13 @@ class HueBridge(NetworkObject):
     self.username = None
     self.groups = {}
 
+    project_loc = os.path.dirname(__file__)
     try:
-      os.mkdir("bridges")
+      os.mkdir(f"{project_loc}/bridges")
     except FileExistsError:
       pass
 
     # Try loading existing JSON configuration file first
-    project_loc = os.path.dirname(__file__)
     try:
       with open(f"{project_loc}/bridges/{name}.json", "r") as json_file:
         load = json.load(json_file)
