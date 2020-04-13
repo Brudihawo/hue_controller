@@ -39,7 +39,23 @@ Grouping:
 
     --remove-group 'group_name'
             Removes group by name.
-
+            
+-------------------------------------------------------------------------------
+Scene Management:
+    --load-scene-file 'C://path/to/scene/file'
+            Loads scenes specified in file to be accessed later.
+            Scene file must have the following structure:
+            {"scene_name1": 
+              {"light1": {"bri": brightness1, "sat": saturation1, "hue": hue1},
+              "light2": {"bri": brightness2, "sat": saturation2, "hue": hue2}
+              ...
+              },
+              {"scene_name2": ...}
+            }
+            
+    --remove scene 'scene_name'
+            Removes scene from saved scenes
+            
 -------------------------------------------------------------------------------
 Light Control:
     --on 'light_name'
@@ -71,6 +87,10 @@ Light Control:
     --inc-bsh-group 'group_name|brightness;saturation;hue'
             Similar to --inc-bsh.
             Increments brightness, saturation and hue for a group.
+    
+    --activate-scene 'scene_name'
+            Activates specified scene.
+            Sets all light parameters specified in scene definition.
             
 """
   print(help_str)
@@ -170,6 +190,21 @@ def get_input_params():
         params = [group_name, inc_params.split(";")]
         break
       
+      if element == "--load-scene-file":
+        action = "LOADSCENEFILE"
+        params = get_next(sys.argv, element)
+        break
+      
+      if element == "--remove-scene":
+        action = "REMOVESCENE"
+        params = get_next(sys.argv, element)
+        break
+      
+      if element = "--activate-scene":
+        action = "ACTIVATESCENE"
+        params = get_next(sys.argv, element)
+        break
+      
   return bridge_name, action, params
 
 def main():
@@ -219,6 +254,8 @@ def main():
           elif action == "INCBSHGROUP":
             bridge.increment_group(params[0], brightness_inc=light_vals[0], saturation_inc=light_vals[1], hue_inc=light_vals[2])
         
+        if action == "ACTIVATESCENE":
+          bridge.activate_scene(params)
           
         if action == "CREATEGROUP":
             try:
@@ -228,6 +265,12 @@ def main():
                 print("Correct Usage: -b hue_bridge --create-group 'group_name|light_1;light_2;...")
         if action == "REMOVEGROUP":
             bridge.remove_group(params)
+        
+        if action == "LOADSCENEFILE":
+          bridge.load_scene_file(params)
+          
+        if action == "REMOVESCENE":
+          bridge.remove_scene(params)
         
         if action == "SHOWLIGHTS":
             for light in bridge.lights:

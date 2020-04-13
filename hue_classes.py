@@ -114,7 +114,8 @@ class HueBridge(NetworkObject):
     self.lights = {}
     self.username = None
     self.groups = {}
-
+    self.scenes = {}
+    
     project_loc = os.path.dirname(__file__)
     try:
       os.mkdir(f"{project_loc}/bridges")
@@ -133,6 +134,11 @@ class HueBridge(NetworkObject):
           self.groups = load["groups"]
         except KeyError:
           pass
+        try:
+          self.scenes = load["scenes"]
+        except KeyError:
+          pass
+        
         self.serialize()
         ip = load["ip"]
           
@@ -214,7 +220,7 @@ class HueBridge(NetworkObject):
     """
     if not self.ip or not self.username or not self.lights or not self.name:
       raise SerializeError("Missing Information", "Cannot serialize uninitialized hue bridge!")
-    out = {"ip": self.ip, "username": self.username, "lights": self.lights, "groups": self.groups}
+    out = {"ip": self.ip, "username": self.username, "lights": self.lights, "groups": self.groups, "scenes": self.scenes}
     project_loc = __file__.strip("hue_classes.py")
     with open(f"{project_loc}/bridges/{self.name}.json", "w") as json_file:
       json.dump(out, json_file)
@@ -446,3 +452,61 @@ class HueBridge(NetworkObject):
       KeyError if group does not exist
     """
     self.increment_light(self.groups[group_name], brightness_inc=brightness_inc, saturation_inc=saturation_inc, hue_inc=hue_inc)
+    
+  def load_scene_file(name, file_path):
+    """Loads JSON scene file for easier scene persistence
+    
+    Scene file needs to be in format:
+    {"scene_name1": 
+      {"light1": {"bri": brightness1, "sat": saturation1, "hue": hue1},
+       "light2": {"bri": brightness2, "sat": saturation2, "hue": hue2}
+       ...
+      },
+    {"scene_name2": ...}
+    }
+    
+    Args:
+      file_path (str): Path to scene file
+      
+    Returns:
+      None
+    """
+    with open(file_path, "w") as scene_file:
+      scenes = json.load(scene_file)
+      for scene in scenes:
+        self.scenes.append({scene: scenes[scene]})
+      self.serialize()
+
+  def activate_scene(self, scene_name):
+    """Sets light states according to scene
+    
+    Prints an error message if that scene does not exist
+    
+    Args:
+      scene_name (str): Name of Scene to activate
+      
+    Returns:
+      None
+    """
+    if scene_name in self.scenes:
+      for light in self.scenes[scene_name]:
+        lightinfo = self.scenes[scene_name][light]
+        self.set_bri_sat_hue(light, lightinfo["bri"], lightinfo["sat"], lightinfo["hue"])
+    self.serialize()
+
+  def remove_scene(self, scene_name):
+    """Removes scene from saved scenes
+    
+    Args:
+      scene_name (str): Name of scene to remove
+    
+    Returns:
+      None
+    """
+        try:
+      removed = self.groups.pop(scene_name)
+    except KeyError:
+      print(f"Cannot remove non-existant scene {scene_name}!")
+    else:
+      print(f"Removed scene {scene_name}({str(removed)})")
+    self.serialize()
