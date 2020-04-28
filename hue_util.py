@@ -14,6 +14,8 @@ def get_next(lst, elem):
     return lst[lst.index(elem) + 1]
   except IndexError:
     return None
+  except ValueError:
+    return None
   
 def map_linear(x, orig_min, orig_max, tar_min, tar_max):
   """Maps x from range [orig_min, orig_max] to [tar_min, tar_max]

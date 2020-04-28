@@ -181,7 +181,7 @@ def main():
   Returns:
     None
   """
-  bridge_name, action, params = get_input_params()   
+  bridge_name, action, params = get_input_params()
   if bridge_name:
       bridge = HueBridge(bridge_name)
       # Creating lockfile to prevent simultateous access to hue bridge
@@ -235,7 +235,6 @@ def main():
         if action == "SHOWGROUPS":
             for group in bridge.groups:
                 print(f"{group:>15}: {bridge.groups[group]}")
-        print("DONE")
         os.remove(lockfile_path)
         
 if __name__ == "__main__":
