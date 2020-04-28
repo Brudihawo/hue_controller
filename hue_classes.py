@@ -424,6 +424,10 @@ class HueBridge(NetworkObject):
           self.set_light_off([name])
         else:
           self.set_light_on([name])
+        try:
+          light_states[name].pop("on")
+        except KeyError:
+          pass
         self.set_bri_sat_hue([name], **light_states[name])
         
   def increment_group(self, group_name, brightness_inc=None, saturation_inc=None, hue_inc=None):
@@ -463,7 +467,7 @@ class HueBridge(NetworkObject):
       try:
         light_on = light_states[light_name]["on"]
       except KeyError:
-        print(f"Light {light_name} not connected to hue bridge")
+        print(f"Light '{light_name}' not connected to hue bridge")
       else:
         if light_on:
           self.set_light_off(light_name)

@@ -31,6 +31,9 @@ Bridge-Specific Commands (Specify bridge with -b 'bridge_name'):
 
     --show-groups
             Lists groups defined for a bridge.
+            
+    --reset-lock
+            Removes lockfile for bridge.
 
 -------------------------------------------------------------------------------
 Grouping:
@@ -185,6 +188,11 @@ def get_input_params():
         group_name, inc_params = get_next(sys.argv, element).split("|")
         params = [group_name, inc_params.split(";")]
         break
+        
+      if element == "--reset-lock":
+        action = "RESETLOCK"
+        params = None
+        break
   
   if not action:
     print("No or unknown action. Try calling with parameter -h or --help for all avaliable options.")
@@ -206,6 +214,17 @@ def main():
     # Creating lockfile to prevent multiple simultateous actions on hue bridge
     project_dir = os.path.abspath(os.path.dirname(__file__))
     lockfile_path = f"{project_dir}/bridges/{bridge_name}.lck"
+    
+    # Lock reset
+    if action == "RESETLOCK":
+      try:
+        os.remove(lockfile_path)
+      except FileNotFoundError:
+        print(f"No lockfile found for bridge '{bridge_name}'.")
+      else:
+        print(f"Removed lockfile for bridge '{bridge_name}'.")
+      
+      
     if not os.path.isfile(lockfile_path):
       with open(lockfile_path, "w+") as lck_file:
         lck_file.write(f"{bridge_name} is locked!")
