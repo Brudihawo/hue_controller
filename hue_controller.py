@@ -47,12 +47,20 @@ Light Control:
 
     --off 'light_name'
             Turns off light by name.
-
+            
+    --toggle 'light_name1;light_name2;light_name3...'
+            Toggle on-status of (multiple) lights by name (separate lights by semicolon).
+            Lights will be toggled individually.
+            
     --group-on 'group_name'
             Turns on all lights in group by name
 
     --group-off 'group_name'
             Turns off all lights in group by name
+    
+    --toggle-group 'group_name'
+            Toggles all on-states of lights in group
+            Lights will be toggled individually
     
     --set-bsh 'light_name|brightness;saturation;hue'
             Sets brightness, saturation and hue for light by name.
@@ -125,6 +133,10 @@ def get_input_params():
         params = get_next(sys.argv, element).split(";")
         break
     
+      if element == "--toggle":
+        action = "TOGGLE_LIGHTS"
+        params = get_next(sys.argv, element).split(";")
+    
       if element == "--create-group":
         action = "CREATEGROUP"
         group_name, lights = get_next(sys.argv, element).split("|")
@@ -145,6 +157,10 @@ def get_input_params():
         action = "GROUPOFF"
         params = get_next(sys.argv, element)
         break
+      
+      if element == "--toggle-group":
+        action = "TOGGLE_GROUP"
+        params = get_next(sys.argv, element)
       
       if element == "--set-bsh":
         action = "SETBSH"
@@ -169,7 +185,9 @@ def get_input_params():
         group_name, inc_params = get_next(sys.argv, element).split("|")
         params = [group_name, inc_params.split(";")]
         break
-      
+  
+  if not action:
+    print("No or unknown action. Try calling with parameter -h or --help for all avaliable options.")
   return bridge_name, action, params
 
 def main():
@@ -182,60 +200,66 @@ def main():
     None
   """
   bridge_name, action, params = get_input_params()
+  
   if bridge_name:
-      bridge = HueBridge(bridge_name)
-      # Creating lockfile to prevent simultateous access to hue bridge
-      project_dir = os.path.abspath(os.path.dirname(__file__))
-      lockfile_path = f"{project_dir}/bridges/{bridge_name}.lck"
-      print(lockfile_path)
-      if not os.path.isfile(lockfile_path):
-        with open(lockfile_path, "w+") as lck_file:
-          lck_file.write(f"{bridge_name} is locked!")
-        if action == "TURNON":
-            bridge.set_light_on(params)
-        if action == "TURNOFF":
-            bridge.set_light_off(params)
-        if action == "GROUPON":
-            bridge.set_group_on(params)
-        if action == "GROUPOFF":
-            bridge.set_group_off(params)
-        
-        # removes "" values and replaces them with none, so nothing is changed
-        if "BSH" in action:
-          light_vals = params[1]
-          for index, val in enumerate(light_vals):
-            try:
-              light_vals[index] = int(val)
-            except ValueError:
-              light_vals[index] = None
-          # setting actions
-          if action == "SETBSH":
-            bridge.set_bri_sat_hue([params[0]], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
-          elif action == "SETBSHGROUP":
-            bridge.group_set_bri_sat_hue(params[0], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
-          # incrementing actions
-          elif action == "INCBSH":
-            bridge.increment_light([params[0]], brightness_inc=light_vals[0], saturation_inc=light_vals[1], hue_inc=light_vals[2])
-          elif action == "INCBSHGROUP":
-            bridge.increment_group(params[0], brightness_inc=light_vals[0], saturation_inc=light_vals[1], hue_inc=light_vals[2])
-        
+    bridge = HueBridge(bridge_name)
+    # Creating lockfile to prevent multiple simultateous actions on hue bridge
+    project_dir = os.path.abspath(os.path.dirname(__file__))
+    lockfile_path = f"{project_dir}/bridges/{bridge_name}.lck"
+    if not os.path.isfile(lockfile_path):
+      with open(lockfile_path, "w+") as lck_file:
+        lck_file.write(f"{bridge_name} is locked!")
+      if action == "TURNON":
+        bridge.set_light_on(params)
+      if action == "TURNOFF":
+        bridge.set_light_off(params)
           
-        if action == "CREATEGROUP":
-            try:
-                print(params)
-                bridge.create_group(*params)
-            except KeyError:
-                print("Correct Usage: -b hue_bridge --create-group 'group_name|light_1;light_2;...")
-        if action == "REMOVEGROUP":
-            bridge.remove_group(params)
+      if action == "TOGGLE_LIGHTS":
+        bridge.toggle_lights(params)
+      
+      if action == "GROUPON":
+        bridge.set_group_on(params)
+      if action == "GROUPOFF":
+        bridge.set_group_off(params)
         
-        if action == "SHOWLIGHTS":
-            for light in bridge.lights:
-                print(bridge.lights[light])
-        if action == "SHOWGROUPS":
-            for group in bridge.groups:
-                print(f"{group:>15}: {bridge.groups[group]}")
-        os.remove(lockfile_path)
+      if action == "TOGGLE_GROUP":
+        bridge.toggle_group(params)
+      
+      # removes "" values and replaces them with none, so nothing is changed
+      if "BSH" in action:
+        light_vals = params[1]
+        for index, val in enumerate(light_vals):
+          try:
+            light_vals[index] = int(val)
+          except ValueError:
+            light_vals[index] = None
+        # setting actions
+        if action == "SETBSH":
+          bridge.set_bri_sat_hue([params[0]], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
+        elif action == "SETBSHGROUP":
+          bridge.group_set_bri_sat_hue(params[0], brightness=light_vals[0], saturation=light_vals[1], hue=light_vals[2])
+        # incrementing actions
+        elif action == "INCBSH":
+          bridge.increment_light([params[0]], brightness_inc=light_vals[0], saturation_inc=light_vals[1], hue_inc=light_vals[2])
+        elif action == "INCBSHGROUP":
+          bridge.increment_group(params[0], brightness_inc=light_vals[0], saturation_inc=light_vals[1], hue_inc=light_vals[2])
+        
+      if action == "CREATEGROUP":
+        try:
+          bridge.create_group(*params)
+        except KeyError:
+          print("Correct Usage: -b hue_bridge --create-group 'group_name|light_1;light_2;...")
+      if action == "REMOVEGROUP":
+        bridge.remove_group(params)
+      
+      if action == "SHOWLIGHTS":
+        for light in bridge.lights:
+          print(light)
+      if action == "SHOWGROUPS":
+        for group in bridge.groups:
+          print(f"{group:>15}: {bridge.groups[group]}")
+      os.remove(lockfile_path)
+      
         
 if __name__ == "__main__":
     main()

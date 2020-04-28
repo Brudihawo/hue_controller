@@ -385,6 +385,8 @@ class HueBridge(NetworkObject):
         tmp_dict.update({"saturation": int(light_state["sat"])})
       if "hue" in light_state:
         tmp_dict.update({"hue": int(light_state["hue"])})
+      if "on" in light_state:
+        tmp_dict.update({"on": light_state["on"]})
       light_states.update({light_name: tmp_dict})
     return light_states
   
@@ -446,3 +448,38 @@ class HueBridge(NetworkObject):
       KeyError if group does not exist
     """
     self.increment_light(self.groups[group_name], brightness_inc=brightness_inc, saturation_inc=saturation_inc, hue_inc=hue_inc)
+    
+  def toggle_lights(self, light_names):
+    """Toggles state of lights in light_names by name
+    
+    Args:
+      light_names (list): list containing names of all lights to toggle.
+      
+    Returns:
+      None
+    """
+    light_states = self.get_light_states()
+    for light_name in light_names:
+      try:
+        light_on = light_states[light_name]["on"]
+      except KeyError:
+        print(f"Light {light_name} not connected to hue bridge")
+      else:
+        if light_on:
+          self.set_light_off(light_name)
+        else:
+          self.set_light_on(light_name)
+  
+  def toggle_group(self, group_name):
+    """Separately toggles whether a light is on or off for each light in the group
+    
+    Does not set the state of each lamp separately. Each light will be toggled individually.
+    
+    Args:
+      group_name (str): Name of group to toggle
+      
+    Returns:
+      None
+      
+    """
+    self.toggle_lights(self.groups[group_name])
