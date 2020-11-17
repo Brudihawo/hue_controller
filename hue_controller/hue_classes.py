@@ -3,7 +3,7 @@ import sys, os
 import requests
 import json
 
-from hue_util import map_linear, cutoff_val
+from hue_controller.hue_util import map_linear, cutoff_val
 
 
 class BaseMessageError(Exception):
@@ -26,10 +26,10 @@ class NetworkObject:
   """
   A network object with http request functionality
   """
-    
+
   def __init__(self, ip, name):
     """Initialization from ip and name
-    
+
     Returns:
       None
     """
@@ -38,15 +38,15 @@ class NetworkObject:
 
   def __repr__(self):
     """Representation of self
-    
+
     Returns:
       Representation of self as string
     """
     return f"Object <NetworkObject>({self.name},{self.ip})"
-    
-  def __str__(self):    
+
+  def __str__(self):
     """Representation of self
-    
+
     Returns:
       Representation of self as string
     """
@@ -54,11 +54,11 @@ class NetworkObject:
 
   def post(self, subadress, data=None):
     """Execute a http POST request at self.ip/subadress with payload data
-    
+
     Args:
       subadress (str): Subadress for request
       data (dict): JSON Data to send
-    
+
     Returns:
       requests http response
     """
@@ -67,10 +67,10 @@ class NetworkObject:
 
   def get(self, subadress):
     """Execute a http GET request at self.ip/subadress with payload data
-    
+
     Args:
       subadress (str): Subadress for request
-    
+
     Returns:
       requests http response
     """
@@ -79,11 +79,11 @@ class NetworkObject:
 
   def put(self, subadress, data):
     """Execute a http PUT request at self.ip/subadress with payload data
-    
+
     Args:
       subadress (str): Subadress for request
       data (dict): JSON Data to send
-    
+
     Returns:
       requests http response
     """
@@ -95,10 +95,10 @@ class HueBridge(NetworkObject):
   """
   Object representation of a hue bridge.
   """
-    
+
   def __init__(self, name, ip=None):
     """Initializes hue Bridge
-    
+
     Args:
       name (str): name of the Hue Bridge
       ip (str): network ip of Hue Bridge
@@ -135,7 +135,7 @@ class HueBridge(NetworkObject):
           pass
         self.serialize()
         ip = load["ip"]
-          
+
     # If it does not exist, get information from Hue Bridge
     # Note that the Sync-Button needs to have been pressed for this to work
     except FileNotFoundError:
@@ -148,26 +148,26 @@ class HueBridge(NetworkObject):
       self.username = self.get_auth()
       self.lights = self.get_lights()
     super().__init__(ip, name)
-  
+
   def __repr__(self):
     """Representation of self
-    
+
     Returns:
       Representation of self as string in format Object <HueBridge>()
     """
     return f"Object <HueBridge> ({self.name}, {self.ip})"
-  
+
   def __repr__(self):
     """String representation of self
-    
+
     Returns:
       Representation of self as string in format <HueBridge> (ip|name)
     """
     return f"Hue Bridge {self.name} at {self.ip}"
-  
+
   def get_auth(self):
     """Gets Authentification information from Hue Bridge via http request.
-    
+
     Returns:
       None
 
@@ -176,7 +176,7 @@ class HueBridge(NetworkObject):
     """
     lights_response = self.post("api", data={"devicetype": "hue_controller"})
     if "link button not pressed" in lights_response.text:
-      raise SignInError("Sign In Failed", "Press sync button on Hue Bridge and try again!")  
+      raise SignInError("Sign In Failed", "Press sync button on Hue Bridge and try again!")
     elif "success" in lights_response.text:
       response_data = lights_response.json()
       username = response_data[0]["success"]["username"]
@@ -184,10 +184,10 @@ class HueBridge(NetworkObject):
       return username
     else:
       raise SignInError("Sign In Failed", "An unknown error occurred!")
-  
+
   def get_lights(self):
     """Gets information on lights connected to hue bridge
-    
+
     Returns:
       Dict mapping light names to light numbers of Hue Bridge
 
@@ -205,7 +205,7 @@ class HueBridge(NetworkObject):
 
   def serialize(self):
     """Saves Information on Hue Bridge to bridges/bridge_name.json in JSON format.
-    
+
     Returns:
       None
 
@@ -218,13 +218,13 @@ class HueBridge(NetworkObject):
     project_loc = __file__.strip("hue_classes.py")
     with open(f"{project_loc}/bridges/{self.name}.json", "w") as json_file:
       json.dump(out, json_file)
-  
+
   def set_light_on(self, names):
     """Turns lights on by name
-    
+
     Args:
       names (list): List of light names
-    
+
     Returns:
       None
     """
@@ -234,10 +234,10 @@ class HueBridge(NetworkObject):
 
   def set_light_off(self, names):
     """Turns lights off by name
-    
+
     Args:
       names (list): List of light names
-    
+
     Returns:
       None
     """
@@ -247,15 +247,15 @@ class HueBridge(NetworkObject):
 
   def get_light_names(self):
     """Gets light names
-    
+
     Returns:
       List of lights (names) connected to hue bridge
     """
     return self.get_lights().keys()
-  
+
   def create_group(self, group_name, light_names):
     """Creates a group of lights with given name
-    
+
     Args:
       group_name (str): Name of the group
       light_names (list): List containing light names
@@ -275,7 +275,7 @@ class HueBridge(NetworkObject):
 
   def remove_group(self, group_name):
     """Removes group by name
-    
+
     Args:
       group_name (str): Name of group to remove
 
@@ -290,10 +290,10 @@ class HueBridge(NetworkObject):
       print(f"Removed group {group_name}({str(removed)})")
 
     self.serialize()
-  
+
   def set_group_on(self, group_name):
     """Turns on all lights in a group
-    
+
     Args:
       group_name (str): Name of the group to turn on
 
@@ -307,7 +307,7 @@ class HueBridge(NetworkObject):
 
   def set_group_off(self, group_name):
     """Turns off all lights in a group
-    
+
     Args:
       group_name (str): Name of the group to turn off
 
@@ -321,13 +321,13 @@ class HueBridge(NetworkObject):
 
   def set_bri_sat_hue(self, light_names, brightness=None, saturation=None, hue=None):
     """Sets light settings by name
-    
+
     Args:
       light_names (list): Names of lights to modify
       brightness (int or float): Optional, brightness of lights (in percent) between 0 and 100
       saturation (int or float): Optional, saturation of lights (in percent) between 0 and 100
       hue (int or float): Optional, hue of lights between 0 and 65535
-      
+
     Returns:
       None
     """
@@ -338,7 +338,7 @@ class HueBridge(NetworkObject):
       saturation = int(map_linear(cutoff_val(saturation, 0, 100), 0, 100, 0, 254))
     if hue:
       hue = cutoff_val(hue, 0, 65535)
-    
+
     # parsing to parameter dict
     params = {}
     if type(brightness) == int:
@@ -353,16 +353,16 @@ class HueBridge(NetworkObject):
       else:
         self.set_light_on(light_name)
       self.put(f"api/{self.username}/lights/{self.lights[light_name]}/state", data=params)
-      
+
   def group_set_bri_sat_hue(self, group_name, brightness=None, saturation=None, hue=None):
     """Sets brightness, saturation and hue of lighting group
-    
+
     Args:
       group_name (str): Name of group to modify
       brightness (int or float): Optional, brightness of lights (in percent) between 0 and 100
       saturation (int or float): Optional, saturation of lights (in percent) between 0 and 100
       hue (int or float): Optional, hue of lights between 0 and 65535
-      
+
     Returns:
       None
     """
@@ -370,7 +370,7 @@ class HueBridge(NetworkObject):
 
   def get_light_states(self):
     """Gets current state of all lights connected to hue bridge
-    
+
     Returns:
       light_states: Dict mapping light state (brightness, saturation, hue) to light
     """
@@ -389,23 +389,23 @@ class HueBridge(NetworkObject):
         tmp_dict.update({"on": light_state["on"]})
       light_states.update({light_name: tmp_dict})
     return light_states
-  
+
   def increment_light(self, names, brightness_inc=None, saturation_inc=None, hue_inc=None):
     """Increments light parameters of lights by name
-    
+
     Increments light paramters of a list of lights. Note that the same increments will be applied to all lights.
     Initially different light states of lights in a group will result in different states after increment.
     Brightness and Saturation are capped at 100, hue is capped at 65535
-    
+
     Args:
       names (list): Names of lights to increment_light
       brightness_inc (int): Percentage brightness increment
       saturation_inc (int): Percentage saturation increment
       hue_inc (int): Absolute hue increment between 0 and 65535
-    
+
     Returns:
       None
-      
+
     Raises:
       LightParamError if the light does not support the parameter you want to set
     """
@@ -429,36 +429,36 @@ class HueBridge(NetworkObject):
         except KeyError:
           pass
         self.set_bri_sat_hue([name], **light_states[name])
-        
+
   def increment_group(self, group_name, brightness_inc=None, saturation_inc=None, hue_inc=None):
     """Increments all lights in group by same values
-    
+
     Increments light paramters of a group. Note that the same increments will be applied to all lights.
     Initially different light states of lights in a group will result in different states after increment.
     Brightness and Saturation are capped at 100, hue is capped at 65535
-    
+
     Turns light off if brightness reaches 0 and turns light on otherwise
-    
+
     Args:
       group_name (str): Names of lights to increment_light
       brightness_inc (int): Percentage brightness increment
       saturation_inc (int): Percentage saturation increment
       hue_inc (int): Absolute hue increment between 0 and 65535
-    
+
     Returns:
       None
-      
+
     Raises:
       KeyError if group does not exist
     """
     self.increment_light(self.groups[group_name], brightness_inc=brightness_inc, saturation_inc=saturation_inc, hue_inc=hue_inc)
-    
+
   def toggle_lights(self, light_names):
     """Toggles state of lights in light_names by name
-    
+
     Args:
       light_names (list): list containing names of all lights to toggle.
-      
+
     Returns:
       None
     """
@@ -473,17 +473,17 @@ class HueBridge(NetworkObject):
           self.set_light_off(light_name)
         else:
           self.set_light_on(light_name)
-  
+
   def toggle_group(self, group_name):
     """Separately toggles whether a light is on or off for each light in the group
-    
+
     Does not set the state of each lamp separately. Each light will be toggled individually.
-    
+
     Args:
       group_name (str): Name of group to toggle
-      
+
     Returns:
       None
-      
+
     """
     self.toggle_lights(self.groups[group_name])
