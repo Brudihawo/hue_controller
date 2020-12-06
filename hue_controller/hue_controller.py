@@ -101,7 +101,7 @@ def get_input_params():
             print_help()
             return None, None, None
         if element == "--show-bridges":
-            for bridge_file in os.scandir("bridges"):
+            for bridge_file in os.scandir(HueBridge.HUE_FILE_LOCATION):
                 print(bridge_file.name.strip(".json"))
                 return None, None, None
         if element == "--init-bridge":
