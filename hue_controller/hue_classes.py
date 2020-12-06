@@ -116,6 +116,8 @@ class NetworkObject:
 class HueBridge(NetworkObject):
     """Object representation of a hue bridge."""
 
+    HUE_FILE_LOCATION = f"{os.path.expanduser('~')}/.hue_controller"
+
     def __init__(self, name, ip=None):
         """Initialize hue Bridge.
 
@@ -136,15 +138,14 @@ class HueBridge(NetworkObject):
         self.username = None
         self.groups = {}
 
-        project_loc = os.path.dirname(__file__)
         try:
-            os.mkdir(f"{project_loc}/bridges")
+            os.mkdir(HueBridge.HUE_FILE_LOCATION)
         except FileExistsError:
             pass
 
         # Try loading existing JSON configuration file first
         try:
-            with open(f"{project_loc}/bridges/{name}.json", "r") as json_file:
+            with open(f"{HueBridge.HUE_FILE_LOCATION}/{name}.json", "r") as json_file:
                 load = json.load(json_file)
                 self.username = load["username"]
                 self.ip = load["ip"]
@@ -240,8 +241,8 @@ class HueBridge(NetworkObject):
                                  "Cannot serialize uninitialized hue bridge!")
         out = {"ip": self.ip, "username": self.username,
                "lights": self.lights, "groups": self.groups}
-        project_loc = __file__.strip("hue_classes.py")
-        with open(f"{project_loc}/bridges/{self.name}.json", "w") as json_file:
+
+        with open(f"{HueBridge.HUE_FILE_LOCATION}/{self.name}.json", "w") as json_file:
             json.dump(out, json_file)
 
     def set_light_on(self, names):
