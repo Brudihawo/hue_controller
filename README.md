@@ -8,4 +8,6 @@ Use -h or --help detailed instructions on command line usage.
 
 ---
 
-## API DOC
+## TODO
+- Add folder to home for hue configurations
+- Make main method more sleek
