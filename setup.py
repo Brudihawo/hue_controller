@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name="hue_controller_py",
-    version="0.1",
+    version="0.1.1",
     author="Brudihawo",
     author_email="hawo.hoefer98@freenet.de",
     scripts=["hue_controller/hue_controller.py"],

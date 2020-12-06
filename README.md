@@ -8,4 +8,5 @@ Use -h or --help detailed instructions on command line usage.
 
 ---
 
-## API DOC
+## TODO
+- Make main method more sleek
