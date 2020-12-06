@@ -1,8 +1,12 @@
+# Python Stuff
 *bridges/
 *__pycache__/
-*.kate-swp
-*~
 build/*
 dist/*
 *.egg-info/*
 */doc/build/*
+
+# IDE/Editor Stuff
+*.kate-swp
+*~
+.ropeproject/
