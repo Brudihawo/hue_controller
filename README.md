@@ -9,5 +9,4 @@ Use -h or --help detailed instructions on command line usage.
 ---
 
 ## TODO
-- Add folder to home for hue configurations
 - Make main method more sleek
