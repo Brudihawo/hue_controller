@@ -1,7 +1,7 @@
-hue\_controller module
+control module
 ======================
 
-.. automodule:: hue_controller
+.. automodule:: hue_controller.control
    :members:
    :undoc-members:
    :show-inheritance:

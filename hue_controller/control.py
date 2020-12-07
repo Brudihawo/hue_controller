@@ -7,12 +7,7 @@ from hue_controller.hue_util import get_next
 
 
 def print_help():
-    """Print Help Information.
-
-    Returns
-    -------
-        None
-    """
+    """Print Help Information."""
     help_str = """Usage: hue_controller.py <command> [params]
 Special Commands:
     --init-bridge  'bridge name' 'ip'
@@ -90,11 +85,13 @@ def get_input_params():
 
     Returns
     -------
-        Tuple containing information on input parameters
+        Tuple (str, str, str)
+            Information on input parameters
     """
     bridge_name = None
     action = None
     params = None
+
     # TODO: Make this more Elegant. Use Dict for actions
     for element in sys.argv:
         if element in ("--help", "-h"):
@@ -204,10 +201,6 @@ def main():
 
     Sanitizes values input values and calls hue bridge functions
     to control lights and output information on hue bridge
-
-    Returns
-    -------
-        None
     """
     bridge_name, action, params = get_input_params()
 

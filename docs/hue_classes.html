@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>hue_classes module &mdash; Hue Controller 1.0 documentation</title>
+  <title>hue_classes module &mdash; Hue Controller 0.1.1 documentation</title>
   
 
   
@@ -145,293 +145,268 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-hue_classes">
-<span id="hue-classes-module"></span><h1>hue_classes module<a class="headerlink" href="#module-hue_classes" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-hue_controller.hue_classes">
+<span id="hue-classes-module"></span><h1>hue_classes module<a class="headerlink" href="#module-hue_controller.hue_classes" title="Permalink to this headline">¶</a></h1>
+<p>Module Containing Class Representations of Hue and Network Objects.</p>
 <dl class="py exception">
-<dt id="hue_classes.BaseMessageError">
-<em class="property">exception </em><code class="sig-prename descclassname">hue_classes.</code><code class="sig-name descname">BaseMessageError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.BaseMessageError" title="Permalink to this definition">¶</a></dt>
+<dt id="hue_controller.hue_classes.BaseMessageError">
+<em class="property">exception </em><code class="sig-name descname">BaseMessageError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.BaseMessageError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base Error with Message.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="hue_classes.HueBridge">
-<em class="property">class </em><code class="sig-prename descclassname">hue_classes.</code><code class="sig-name descname">HueBridge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">ip</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#hue_classes.NetworkObject" title="hue_classes.NetworkObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_classes.NetworkObject</span></code></a></p>
+<dt id="hue_controller.hue_classes.HueBridge">
+<em class="property">class </em><code class="sig-name descname">HueBridge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">ip</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hue_controller.hue_classes.NetworkObject" title="hue_controller.hue_classes.NetworkObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_controller.hue_classes.NetworkObject</span></code></a></p>
 <p>Object representation of a hue bridge.</p>
+<dl class="py attribute">
+<dt id="hue_controller.hue_classes.HueBridge.HUE_FILE_LOCATION">
+<code class="sig-name descname">HUE_FILE_LOCATION</code><em class="property"> = 'C:\\Users\\hawoh/.hue_controller'</em><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.HUE_FILE_LOCATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt id="hue_classes.HueBridge.create_group">
-<code class="sig-name descname">create_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em>, <em class="sig-param"><span class="n">light_names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.create_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a group of lights with given name</p>
+<dt id="hue_controller.hue_classes.HueBridge.create_group">
+<code class="sig-name descname">create_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em>, <em class="sig-param"><span class="n">light_names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.create_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a group of lights with given name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>group_name</strong> (<em>str</em>) – Name of the group</p></li>
-<li><p><strong>light_names</strong> (<em>list</em>) – List containing light names</p></li>
+<li><p><strong>group_name</strong> (<em>str</em>) – Group name.</p></li>
+<li><p><strong>light_names</strong> (<em>str</em><em>[</em><em>]</em>) – Light name list.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hue_controller.hue_classes.HueBridge.get_auth">
+<code class="sig-name descname">get_auth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.get_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get authentification information from Hue Bridge via http request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hue_controller.hue_classes.SignInError" title="hue_controller.hue_classes.SignInError"><strong>SignInError</strong></a> – If the Hue Bridge did not return a success message.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.get_auth">
-<code class="sig-name descname">get_auth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.get_auth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets Authentification information from Hue Bridge via http request.</p>
+<dt id="hue_controller.hue_classes.HueBridge.get_light_names">
+<code class="sig-name descname">get_light_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.get_light_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get light names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>SignInError if the Hue Bridge did not return a success message</strong> – </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="hue_classes.HueBridge.get_light_names">
-<code class="sig-name descname">get_light_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.get_light_names" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets light names</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>List of lights (names) connected to hue bridge</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="hue_classes.HueBridge.get_light_states">
-<code class="sig-name descname">get_light_states</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.get_light_states" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets current state of all lights connected to hue bridge</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Dict mapping light state (brightness, saturation, hue) to light</p>
+<dd class="field-odd"><p>Light names connected to hue bridge.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>light_states</p>
+<dd class="field-even"><p>str[]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.get_lights">
-<code class="sig-name descname">get_lights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.get_lights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets information on lights connected to hue bridge</p>
+<dt id="hue_controller.hue_classes.HueBridge.get_light_states">
+<code class="sig-name descname">get_light_states</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.get_light_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current state of all lights connected to hue bridge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Dict mapping light names to light numbers of Hue Bridge</p>
+<dd class="field-odd"><p>Mapping of light states (brightness, saturation, hue) to lights.</p>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>SignInError if no username is set when trying to access lights</strong> – </p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.group_set_bri_sat_hue">
-<code class="sig-name descname">group_set_bri_sat_hue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em>, <em class="sig-param"><span class="n">brightness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.group_set_bri_sat_hue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets brightness, saturation and hue of lighting group</p>
+<dt id="hue_controller.hue_classes.HueBridge.get_lights">
+<code class="sig-name descname">get_lights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.get_lights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information on lights connected to hue bridge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Mapping of light names to light numbers of Hue Bridge.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hue_controller.hue_classes.SignInError" title="hue_controller.hue_classes.SignInError"><strong>SignInError</strong></a> – If no username is set when trying to access lights.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hue_controller.hue_classes.HueBridge.group_set_bri_sat_hue">
+<code class="sig-name descname">group_set_bri_sat_hue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em>, <em class="sig-param"><span class="n">brightness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.group_set_bri_sat_hue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set brightness, saturation and hue of lighting group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>group_name</strong> (<em>str</em>) – Name of group to modify</p></li>
-<li><p><strong>brightness</strong> (<em>int</em><em> or </em><em>float</em>) – Optional, brightness of lights (in percent) between 0 and 100</p></li>
-<li><p><strong>saturation</strong> (<em>int</em><em> or </em><em>float</em>) – Optional, saturation of lights (in percent) between 0 and 100</p></li>
-<li><p><strong>hue</strong> (<em>int</em><em> or </em><em>float</em>) – Optional, hue of lights between 0 and 65535</p></li>
+<li><p><strong>group_name</strong> (<em>str</em>) – Name of group to modify.</p></li>
+<li><p><strong>brightness</strong> (<em>numeric</em>) – Optional, brightness of lights (in percent) between 0 and 100.</p></li>
+<li><p><strong>saturation</strong> (<em>numeric</em>) – Optional, saturation of lights (in percent) between 0 and 100.</p></li>
+<li><p><strong>hue</strong> (<em>numeric</em>) – Optional, hue of lights between 0 and 65535.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.increment_group">
-<code class="sig-name descname">increment_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em>, <em class="sig-param"><span class="n">brightness_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue_inc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.increment_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Increments all lights in group by same values</p>
-<p>Increments light paramters of a group. Note that the same increments will be applied to all lights.
-Initially different light states of lights in a group will result in different states after increment.
+<dt id="hue_controller.hue_classes.HueBridge.increment_group">
+<code class="sig-name descname">increment_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em>, <em class="sig-param"><span class="n">brightness_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue_inc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.increment_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment all lights in group by same values.</p>
+<p>Increments light paramters of a group.
+Note that the same increments will be applied to all lights.
+Initially different light states of lights in a group will
+result in different states after increment.
 Brightness and Saturation are capped at 100, hue is capped at 65535</p>
 <p>Turns light off if brightness reaches 0 and turns light on otherwise</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>group_name</strong> (<em>str</em>) – Names of lights to increment_light</p></li>
-<li><p><strong>brightness_inc</strong> (<em>int</em>) – Percentage brightness increment</p></li>
-<li><p><strong>saturation_inc</strong> (<em>int</em>) – Percentage saturation increment</p></li>
-<li><p><strong>hue_inc</strong> (<em>int</em>) – Absolute hue increment between 0 and 65535</p></li>
+<li><p><strong>group_name</strong> (<em>str</em>) – Names of lights to increment_light.</p></li>
+<li><p><strong>brightness_inc</strong> (<em>int</em>) – Percentage brightness increment.</p></li>
+<li><p><strong>saturation_inc</strong> (<em>int</em>) – Percentage saturation increment.</p></li>
+<li><p><strong>hue_inc</strong> (<em>int</em>) – Absolute hue increment between 0 and 65535.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>KeyError if group does not exist</strong> – </p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If group does not exist.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.increment_light">
-<code class="sig-name descname">increment_light</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">names</span></em>, <em class="sig-param"><span class="n">brightness_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue_inc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.increment_light" title="Permalink to this definition">¶</a></dt>
-<dd><p>Increments light parameters of lights by name</p>
-<p>Increments light paramters of a list of lights. Note that the same increments will be applied to all lights.
-Initially different light states of lights in a group will result in different states after increment.
+<dt id="hue_controller.hue_classes.HueBridge.increment_light">
+<code class="sig-name descname">increment_light</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">names</span></em>, <em class="sig-param"><span class="n">brightness_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation_inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue_inc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.increment_light" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment light status by name.</p>
+<p>Increments light paramters of a list of lights.
+Note that the same increments will be applied to all lights.
+Initially different light states of lights in a group will
+result in different states after increment.
 Brightness and Saturation are capped at 100, hue is capped at 65535</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>names</strong> (<em>list</em>) – Names of lights to increment_light</p></li>
-<li><p><strong>brightness_inc</strong> (<em>int</em>) – Percentage brightness increment</p></li>
-<li><p><strong>saturation_inc</strong> (<em>int</em>) – Percentage saturation increment</p></li>
-<li><p><strong>hue_inc</strong> (<em>int</em>) – Absolute hue increment between 0 and 65535</p></li>
+<li><p><strong>names</strong> (<em>str</em><em>[</em><em>]</em>) – Names of lights to increment_light.</p></li>
+<li><p><strong>brightness_inc</strong> (<em>int</em>) – Percentage brightness increment.</p></li>
+<li><p><strong>saturation_inc</strong> (<em>int</em>) – Percentage saturation increment.</p></li>
+<li><p><strong>hue_inc</strong> (<em>int</em>) – Absolute hue increment between 0 and 65535.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>LightParamError if the light does not support the parameter you want to set</strong> – </p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#hue_controller.hue_classes.LightParamError" title="hue_controller.hue_classes.LightParamError"><strong>LightParamError</strong></a> – If the light does not support the parameter you want to set.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.remove_group">
-<code class="sig-name descname">remove_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.remove_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes group by name</p>
+<dt id="hue_controller.hue_classes.HueBridge.remove_group">
+<code class="sig-name descname">remove_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.remove_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove group by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of group to remove</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of group to remove.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.serialize">
-<code class="sig-name descname">serialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves Information on Hue Bridge to bridges/bridge_name.json in JSON format.</p>
+<dt id="hue_controller.hue_classes.HueBridge.serialize">
+<code class="sig-name descname">serialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save Information on Hue Bridge to bridges/bridge_name.json in JSON format.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>SerializeError if Hue Bridge is not fully initialized at time of serialization.</strong> – </p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hue_controller.hue_classes.SerializeError" title="hue_controller.hue_classes.SerializeError"><strong>SerializeError</strong></a> – If Hue Bridge is not fully initialized at time of serialization.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.set_bri_sat_hue">
-<code class="sig-name descname">set_bri_sat_hue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">light_names</span></em>, <em class="sig-param"><span class="n">brightness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.set_bri_sat_hue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets light settings by name</p>
+<dt id="hue_controller.hue_classes.HueBridge.set_bri_sat_hue">
+<code class="sig-name descname">set_bri_sat_hue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">light_names</span></em>, <em class="sig-param"><span class="n">brightness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saturation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hue</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.set_bri_sat_hue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set light state by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>light_names</strong> (<em>list</em>) – Names of lights to modify</p></li>
-<li><p><strong>brightness</strong> (<em>int</em><em> or </em><em>float</em>) – Optional, brightness of lights (in percent) between 0 and 100</p></li>
-<li><p><strong>saturation</strong> (<em>int</em><em> or </em><em>float</em>) – Optional, saturation of lights (in percent) between 0 and 100</p></li>
-<li><p><strong>hue</strong> (<em>int</em><em> or </em><em>float</em>) – Optional, hue of lights between 0 and 65535</p></li>
+<li><p><strong>light_names</strong> (<em>str</em><em>[</em><em>]</em>) – Names of lights to modify</p></li>
+<li><p><strong>brightness</strong> (<em>numeric</em>) – Optional, brightness of lights (in percent) between 0 and 100.</p></li>
+<li><p><strong>saturation</strong> (<em>numeric</em>) – Optional, saturation of lights (in percent) between 0 and 100.</p></li>
+<li><p><strong>hue</strong> (<em>numeric</em>) – Optional, hue of lights between 0 and 65535.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.set_group_off">
-<code class="sig-name descname">set_group_off</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.set_group_off" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turns off all lights in a group</p>
+<dt id="hue_controller.hue_classes.HueBridge.set_group_off">
+<code class="sig-name descname">set_group_off</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.set_group_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn off all lights in a group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of the group to turn off</p>
+<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of the group to turn off.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>KeyError if group does not exist</strong> – </p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If group does not exist.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.set_group_on">
-<code class="sig-name descname">set_group_on</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.set_group_on" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turns on all lights in a group</p>
+<dt id="hue_controller.hue_classes.HueBridge.set_group_on">
+<code class="sig-name descname">set_group_on</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.set_group_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn on all lights in a group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of the group to turn on</p>
+<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of the group to turn on.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>KeyError if group does not exist</strong> – </p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If group does not exist.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.set_light_off">
-<code class="sig-name descname">set_light_off</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.set_light_off" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turns lights off by name</p>
+<dt id="hue_controller.hue_classes.HueBridge.set_light_off">
+<code class="sig-name descname">set_light_off</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.set_light_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn off light(s) by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>names</strong> (<em>list</em>) – List of light names</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>[</strong><strong>]</strong><strong>)</strong> (<em>names</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.set_light_on">
-<code class="sig-name descname">set_light_on</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.set_light_on" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turns lights on by name</p>
+<dt id="hue_controller.hue_classes.HueBridge.set_light_on">
+<code class="sig-name descname">set_light_on</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.set_light_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn on light(s) by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>names</strong> (<em>list</em>) – List of light names</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>[</strong><strong>]</strong><strong>)</strong> (<em>names</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.toggle_group">
-<code class="sig-name descname">toggle_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.toggle_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Separately toggles whether a light is on or off for each light in the group</p>
+<dt id="hue_controller.hue_classes.HueBridge.toggle_group">
+<code class="sig-name descname">toggle_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.toggle_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Separately toggle whether a light is on or off for each light in the group.</p>
 <p>Does not set the state of each lamp separately. Each light will be toggled individually.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of group to toggle</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>group_name</strong> (<em>str</em>) – Name of group to toggle.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.HueBridge.toggle_lights">
-<code class="sig-name descname">toggle_lights</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">light_names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.HueBridge.toggle_lights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Toggles state of lights in light_names by name</p>
+<dt id="hue_controller.hue_classes.HueBridge.toggle_lights">
+<code class="sig-name descname">toggle_lights</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">light_names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.HueBridge.toggle_lights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggle state of lights in light_names by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>light_names</strong> (<em>list</em>) – list containing names of all lights to toggle.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>light_names</strong> (<em>str</em><em>[</em><em>]</em>) – list containing names of all lights to toggle.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -439,34 +414,58 @@ Brightness and Saturation are capped at 100, hue is capped at 65535</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="hue_classes.LightParamError">
-<em class="property">exception </em><code class="sig-prename descclassname">hue_classes.</code><code class="sig-name descname">LightParamError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.LightParamError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#hue_classes.BaseMessageError" title="hue_classes.BaseMessageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_classes.BaseMessageError</span></code></a></p>
+<dt id="hue_controller.hue_classes.LightParamError">
+<em class="property">exception </em><code class="sig-name descname">LightParamError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.LightParamError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hue_controller.hue_classes.BaseMessageError" title="hue_controller.hue_classes.BaseMessageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_controller.hue_classes.BaseMessageError</span></code></a></p>
+<p>Error with light parameters.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="hue_classes.NetworkObject">
-<em class="property">class </em><code class="sig-prename descclassname">hue_classes.</code><code class="sig-name descname">NetworkObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ip</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.NetworkObject" title="Permalink to this definition">¶</a></dt>
+<dt id="hue_controller.hue_classes.NetworkObject">
+<em class="property">class </em><code class="sig-name descname">NetworkObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ip</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.NetworkObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A network object with http request functionality</p>
+<p>Network object with http request functionality.</p>
 <dl class="py method">
-<dt id="hue_classes.NetworkObject.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subadress</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.NetworkObject.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a http GET request at self.ip/subadress with payload data</p>
+<dt id="hue_controller.hue_classes.NetworkObject.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subadress</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.NetworkObject.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a http GET request at self.ip/subadress with payload data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>subadress</strong> (<em>str</em>) – Subadress for request</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>requests http response</p>
+<dd class="field-even"><p>Response to HTTP  get request.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Requests HTTP response</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="hue_classes.NetworkObject.post">
-<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subadress</span></em>, <em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.NetworkObject.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a http POST request at self.ip/subadress with payload data</p>
+<dt id="hue_controller.hue_classes.NetworkObject.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subadress</span></em>, <em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.NetworkObject.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a http POST request at self.ip/subadress with payload data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subadress</strong> (<em>str</em>) – Subadress for request.</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – JSON Data to send.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Response to HTTP post request.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Requests HTTP response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hue_controller.hue_classes.NetworkObject.put">
+<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subadress</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.NetworkObject.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a http PUT request at self.ip/subadress with payload data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -475,24 +474,10 @@ Brightness and Saturation are capped at 100, hue is capped at 65535</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>requests http response</p>
+<dd class="field-even"><p>Response to HTTP put request.</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="hue_classes.NetworkObject.put">
-<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subadress</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.NetworkObject.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a http PUT request at self.ip/subadress with payload data</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>subadress</strong> (<em>str</em>) – Subadress for request</p></li>
-<li><p><strong>data</strong> (<em>dict</em>) – JSON Data to send</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>requests http response</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Requests HTTP response</p>
 </dd>
 </dl>
 </dd></dl>
@@ -500,15 +485,17 @@ Brightness and Saturation are capped at 100, hue is capped at 65535</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="hue_classes.SerializeError">
-<em class="property">exception </em><code class="sig-prename descclassname">hue_classes.</code><code class="sig-name descname">SerializeError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.SerializeError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#hue_classes.BaseMessageError" title="hue_classes.BaseMessageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_classes.BaseMessageError</span></code></a></p>
+<dt id="hue_controller.hue_classes.SerializeError">
+<em class="property">exception </em><code class="sig-name descname">SerializeError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.SerializeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hue_controller.hue_classes.BaseMessageError" title="hue_controller.hue_classes.BaseMessageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_controller.hue_classes.BaseMessageError</span></code></a></p>
+<p>Error on serialisation.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="hue_classes.SignInError">
-<em class="property">exception </em><code class="sig-prename descclassname">hue_classes.</code><code class="sig-name descname">SignInError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_classes.SignInError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#hue_classes.BaseMessageError" title="hue_classes.BaseMessageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_classes.BaseMessageError</span></code></a></p>
+<dt id="hue_controller.hue_classes.SignInError">
+<em class="property">exception </em><code class="sig-name descname">SignInError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expression</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_classes.SignInError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hue_controller.hue_classes.BaseMessageError" title="hue_controller.hue_classes.BaseMessageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">hue_controller.hue_classes.BaseMessageError</span></code></a></p>
+<p>Error On Sign in.</p>
 </dd></dl>
 
 </div>
