@@ -3,7 +3,7 @@ import os
 import json
 import requests
 
-from hue_controller.hue_util import map_linear, cutoff_val
+from .hue_util import map_linear, cutoff_val
 
 
 class BaseMessageError(Exception):

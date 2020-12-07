@@ -2,8 +2,8 @@
 import sys
 import os
 
-from hue_controller.hue_classes import HueBridge
-from hue_controller.hue_util import get_next
+from .hue_classes import HueBridge
+from .hue_util import get_next
 
 
 def print_help():
