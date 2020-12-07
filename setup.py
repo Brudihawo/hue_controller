@@ -5,10 +5,10 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name="hue_controller_py",
-    version="0.1.1",
+    version="0.1.3",
     author="Brudihawo",
     author_email="hawo.hoefer98@freenet.de",
-    scripts=["hue_controller/hue_controller.py"],
+    scripts=["hue_controller/control.py"],
     description="A Command Line Interface for Controlling Hue Lights",
     long_description=descr_long,
     long_description_content_type="text/markdown",

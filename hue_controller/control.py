@@ -2,8 +2,8 @@
 import sys
 import os
 
-from .hue_classes import HueBridge
-from .hue_util import get_next
+from hue_controller.hue_classes import HueBridge
+from hue_controller.hue_util import get_next
 
 
 def print_help():
@@ -214,8 +214,7 @@ def main():
     if bridge_name:
         bridge = HueBridge(bridge_name)
         # Creating lockfile to prevent multiple simultateous actions on hue bridge
-        project_dir = os.path.abspath(os.path.dirname(__file__))
-        lockfile_path = f"{project_dir}/bridges/{bridge_name}.lck"
+        lockfile_path = f"{HueBridge.HUE_FILE_LOCATION}/{bridge_name}.lck"
 
         # Lock reset
         if action == "RESETLOCK":
