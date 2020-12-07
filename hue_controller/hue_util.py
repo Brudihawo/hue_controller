@@ -8,12 +8,15 @@ def get_next(lst, elem):
 
     Parameters
     ----------
-        lst: list
+        lst : List in which to find next element
         elem: Element in array to get next element
 
     Returns
     -------
-        Next element of array after elem if it is present, else returns None
+        None
+            If element is last in lst
+        Element
+            Next element in list (else)
     """
     try:
         return lst[lst.index(elem) + 1]
@@ -28,15 +31,21 @@ def map_linear(x, orig_min, orig_max, tar_min, tar_max):
 
     Parameters
     ----------
-        x (numeric): Value to map
-        orig_min (numeric): Lower boundary of origin range
-        orig_max (numeric): Upper boundary of origin range
-        tar_min (numeric): Lower boundary of target range
-        tar_max (numeric): Upper boundary of target range
+        x : numeric
+            Value to map.
+        orig_min : numeric
+                   Lower boundary of origin range.
+        orig_max : numeric
+                   Upper boundary of origin range.
+        tar_min : numeric
+                  Lower boundary of target range.
+        tar_max : numeric
+                  Upper boundary of target range.
 
     Returns
     -------
-        Mapped x in new target range
+        int
+            Mapped x in new target range
     """
     return (x - orig_min) / (orig_min - orig_max) * (tar_min - tar_max) + tar_min
 
@@ -46,13 +55,17 @@ def cutoff_val(x, lower, upper):
 
     Parameters
     ----------
-        x (numeric): Value to cut off
-        lower (numeric): Lower boundary
-        upper (numeric): Upper boundary
+        x : numeric
+            Value to cut off.
+        lower : numeric
+                Lower boundary.
+        upper : numeric
+                Upper boundary.
 
     Returns
     -------
-        lower if x < lower, upper if x > upper, else x
+        numeric
+            lower if x < lower, upper if x > upper, else x.
     """
     if x < lower:
         return lower

@@ -145,69 +145,70 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-hue_util">
-<span id="hue-util-module"></span><h1>hue_util module<a class="headerlink" href="#module-hue_util" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-hue_controller.hue_util">
+<span id="hue-util-module"></span><h1>hue_util module<a class="headerlink" href="#module-hue_controller.hue_util" title="Permalink to this headline">¶</a></h1>
 <p>Utility Functions for hue_controller.</p>
 <dl class="py function">
-<dt id="hue_util.cutoff_val">
-<code class="sig-prename descclassname">hue_util.</code><code class="sig-name descname">cutoff_val</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">lower</span></em>, <em class="sig-param"><span class="n">upper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_util.cutoff_val" title="Permalink to this definition">¶</a></dt>
+<dt id="hue_controller.hue_util.cutoff_val">
+<code class="sig-name descname">cutoff_val</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">lower</span></em>, <em class="sig-param"><span class="n">upper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_util.cutoff_val" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cut off values exceeding upper and lower boundary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> (<em>upper</em>) – </p></li>
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> – </p></li>
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> – </p></li>
+<li><p><strong>x</strong> (<em>numeric</em>) – Value to cut off.</p></li>
+<li><p><strong>lower</strong> (<em>numeric</em>) – Lower boundary.</p></li>
+<li><p><strong>upper</strong> (<em>numeric</em>) – Upper boundary.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>lower if x &lt; lower, upper if x &gt; upper, else x.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>lower if x &lt; lower, upper if x &gt; upper, else x</p>
+<dd class="field-odd"><p>numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="hue_util.get_next">
-<code class="sig-prename descclassname">hue_util.</code><code class="sig-name descname">get_next</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em>, <em class="sig-param"><span class="n">elem</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_util.get_next" title="Permalink to this definition">¶</a></dt>
+<dt id="hue_controller.hue_util.get_next">
+<code class="sig-name descname">get_next</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em>, <em class="sig-param"><span class="n">elem</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_util.get_next" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get subsequent element of list.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>lst</strong> (<em>list</em>) – </p></li>
+<li><p><strong>lst</strong> (<em>List in which to find next element</em>) – </p></li>
 <li><p><strong>elem</strong> (<em>Element in array to get next element</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Next element of array after elem if it is present, else returns None</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>None</em> – If element is last in lst</p></li>
+<li><p><em>Element</em> – Next element in list (else)</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="hue_util.map_linear">
-<code class="sig-prename descclassname">hue_util.</code><code class="sig-name descname">map_linear</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">orig_min</span></em>, <em class="sig-param"><span class="n">orig_max</span></em>, <em class="sig-param"><span class="n">tar_min</span></em>, <em class="sig-param"><span class="n">tar_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_util.map_linear" title="Permalink to this definition">¶</a></dt>
+<dt id="hue_controller.hue_util.map_linear">
+<code class="sig-name descname">map_linear</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">orig_min</span></em>, <em class="sig-param"><span class="n">orig_max</span></em>, <em class="sig-param"><span class="n">tar_min</span></em>, <em class="sig-param"><span class="n">tar_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hue_controller.hue_util.map_linear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map x from range [orig_min, orig_max] to [tar_min, tar_max].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> (<em>tar_max</em>) – </p></li>
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> – </p></li>
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> – </p></li>
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> – </p></li>
-<li><p><strong>(</strong><strong>numeric</strong><strong>)</strong> – </p></li>
+<li><p><strong>x</strong> (<em>numeric</em>) – Value to map.</p></li>
+<li><p><strong>orig_min</strong> (<em>numeric</em>) – Lower boundary of origin range.</p></li>
+<li><p><strong>orig_max</strong> (<em>numeric</em>) – Upper boundary of origin range.</p></li>
+<li><p><strong>tar_min</strong> (<em>numeric</em>) – Lower boundary of target range.</p></li>
+<li><p><strong>tar_max</strong> (<em>numeric</em>) – Upper boundary of target range.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>Mapped x in new target range</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Mapped x in new target range</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
