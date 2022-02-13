@@ -3,9 +3,5 @@
 build/*
 dist/*
 *.egg-info/*
-*/doc/build/*
+doc/build
 
-# IDE/Editor Stuff
-*.kate-swp
-*~
-.ropeproject/
